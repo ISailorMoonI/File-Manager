@@ -8,25 +8,13 @@ namespace File_Manager
 {
     public class ShowInfo
     {
-        public ShowInfo()
-        {
-            DirInfo = "Uknown";
-        }
-        public ShowInfo(string dirinfo)
-        {
-            DirInfo = dirinfo;
-        }
-        public string DirInfo { get; }
 
-        public override string ToString()
-        {
-            return DirInfo;
-        }
+        public string DirInfo { get; set; }
 
-        public static string CurrentDir()
+        public string CurrentDir()
         {
             Console.WriteLine("Enter path");
-            string DirInfo = Console.ReadLine();
+            this.DirInfo = Console.ReadLine();
             Console.WriteLine("Current directory  is: {0} \n", DirInfo);
             return DirInfo;
         }
@@ -36,10 +24,9 @@ namespace File_Manager
         {
             //Console.WriteLine("Enter path");
             //string pathString = Console.ReadLine();
-            string pathstring = DirInfo;
             Console.WriteLine("====================================================================");
-            Console.WriteLine("The directory {0} contains the following directories: \n", DirInfo);
-            foreach (string folder in Directory.GetDirectories(DirInfo))
+            Console.WriteLine("The directory {0} contains the following directories: \n", this.DirInfo);
+            foreach (var folder in Directory.GetDirectories(this.DirInfo))
             {
                 Console.WriteLine(Path.GetFileName(folder));
             }
@@ -48,9 +35,7 @@ namespace File_Manager
         //Выводит список файлов в ПАПКЕ и их размер без указания пути
         public void ShowFiles()
         {
-            //Console.WriteLine("Enter path");
-            //string pathString = Console.ReadLine();
-            string pathString = DirInfo;
+
             DirectoryInfo directory = new DirectoryInfo(DirInfo);
             FileInfo[] fileArray = directory.GetFiles();
             Console.WriteLine("====================================================================");
@@ -65,32 +50,28 @@ namespace File_Manager
         //Выводит список папок с полным путем
         public void ShowDirectory()
         {
-            string pathstring = DirInfo;
             string[] directoryArray = Directory.GetDirectories(DirInfo);
             foreach (string directory in directoryArray)
             {
-
                 Console.WriteLine($"{directory}");
-
             }
         }
         //Выводит общий размер папки
-        public static long GetDirectorySize(string p)
+        public long GetDirectorySize()
         {
-
-            string[] a = Directory.GetFiles(p, "*.*");
-            long b = 0;
+            string[] a = Directory.GetFiles(DirInfo, "*.*");
+            long size = 0;
             foreach (string name in a)
             {
                 FileInfo info = new FileInfo(name);
-                b += info.Length;
+                size += info.Length;
             }
-            return b;
-
+            Console.WriteLine("The Directory {0} size is {1} bytes ", DirInfo, size);
+            return size;
+            
         }
         public void DirSize()
         {
-            string pathstring = DirInfo;
             string[] directoryArray = Directory.GetDirectories(DirInfo);
             foreach (string directory in directoryArray)
             {
